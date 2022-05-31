@@ -31,7 +31,7 @@ peripheral.find("modem", function(name, wrapped)
         rednet.open(name)
     end
 end)
- 
+
 if not rednet.isOpen() then
     error("No wireless modem found", 2)
 end
@@ -111,7 +111,7 @@ local wrappedPeripheralApi = {
     wppPrefetch=function(clientId, peripheralName, methods)
         log("Real wppPrefetch("..clientId..", ".. peripheralName ..", ".. textutils.serialize(methods) ..")")
         local methodResults = {}
-        
+
         for possibleMethodName,methodInfo in pairs(methods) do
             local methodName
             local methodArgs
@@ -129,7 +129,7 @@ local wrappedPeripheralApi = {
                 local r = {nativePeripheral.call(peripheralName, methodName, unpack(methodArgs))}
                 return r
             end)
-    
+
             if status then
                 methodResults[methodName] = result
             end
@@ -193,11 +193,11 @@ function wireless.prefetchMethods(peripheralUrl, methods)
 
     if parsedPeripheralUrl == nil then
         prefetchCache[peripheralUrl] = {}
-        
+
         for possibleMethodName,methodInfo in pairs(methods) do
             local methodName
             local methodArgs
-            
+
             if type(methodInfo) == "table" then
                 methodName = possibleMethodName
                 methodArgs = methodInfo
@@ -225,6 +225,10 @@ function wireless.prefetchMethods(peripheralUrl, methods)
             prefetchCache[peripheralUrl] = reply.data
         end
     end
+end
+
+function wireless.getCurrentProtocol()
+    return currentProtocol
 end
 
 -- Start->New peripheral API using WPP
